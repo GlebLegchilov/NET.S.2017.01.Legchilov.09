@@ -15,7 +15,7 @@ namespace Task1
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public enum BookTypeSearch
         {
-            Name,
+            Name = 0,
             Author,
             PublishingHouse,
             Text

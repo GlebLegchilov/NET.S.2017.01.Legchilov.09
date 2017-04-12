@@ -12,9 +12,43 @@ namespace Task1
     /// </summary>
     public class BookListService
     {
+        private static Delegate[] delegatesSort;
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private List<Book> BookListStorage = new List<Book>();
 
+        static BookListService()
+        {
+            Comparison<Book> comparisions = delegate(Book x, Book y)
+                        {
+                            if (x.Author == null && y.Author == null) return 0;
+                            else if (x.Author == null) return -1;
+                            else if (y.Author == null) return 1;
+                            else return x.Author.CompareTo(y.Author);
+                        };
+            comparisions += delegate (Book x, Book y)
+            {
+                if (x.Name == null && y.Name == null) return 0;
+                else if (x.Name == null) return -1;
+                else if (y.Name == null) return 1;
+                else return x.Name.CompareTo(y.Name);
+            };
+            comparisions += delegate (Book x, Book y)
+            {
+                if (x.PublishingHouse == null && y.PublishingHouse == null) return 0;
+                else if (x.PublishingHouse == null) return -1;
+                else if (y.PublishingHouse == null) return 1;
+                else return x.PublishingHouse.CompareTo(y.PublishingHouse);
+            };
+            comparisions += delegate (Book x, Book y)
+            {
+                if (x.Text == null && y.Text == null) return 0;
+                else if (x.Text == null) return -1;
+                else if (y.Text == null) return 1;
+                else return x.Text.CompareTo(y.Text);
+            };
+            delegatesSort = comparisions.GetInvocationList();
+        }
+        
         /// <summary>
         /// Load data from binary file
         /// </summary>
@@ -125,39 +159,7 @@ namespace Task1
         public void SortBookByTag(Book.BookTypeSearch type)
         {
             logger.Debug("Sorting book's list");
-            switch (type)
-            {
-                case Book.BookTypeSearch.Author:
-                    BookListStorage.Sort(delegate (Book x, Book y)
-                    {
-                        if (x.Author == null && y.Author == null) return 0;
-                        else if (x.Author == null) return -1;
-                        else if (y.Author == null) return 1;
-                        else return x.Author.CompareTo(y.Author);
-                    });
-                    break;
-                case Book.BookTypeSearch.Name:
-                    BookListStorage.Sort(delegate (Book x, Book y)
-                    {
-                        if (x.Name == null && y.Name == null) return 0;
-                        else if (x.Name == null) return -1;
-                        else if (y.Name == null) return 1;
-                        else return x.Name.CompareTo(y.Name);
-                    });
-                    break;
-                case Book.BookTypeSearch.PublishingHouse:
-                    BookListStorage.Sort(delegate (Book x, Book y)
-                    {
-                        if (x.PublishingHouse == null && y.PublishingHouse == null) return 0;
-                        else if (x.PublishingHouse == null) return -1;
-                        else if (y.PublishingHouse == null) return 1;
-                        else return x.PublishingHouse.CompareTo(y.PublishingHouse);
-                    });
-                    break;
-                default:
-                    BookListStorage.Sort();
-                    break;
-            }
+            BookListStorage.Sort((Comparison<Book>)delegatesSort[(int)type]);
         }
     }
 }
