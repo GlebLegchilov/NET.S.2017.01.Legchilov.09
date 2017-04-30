@@ -47,12 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinarySerializerStorage.cs" />
     <Compile Include="BookListStorage.cs" />
     <Compile Include="BooksComparerByName.cs" />
     <Compile Include="ComparableByName.cs" />
     <Compile Include="NLoggerAdapter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XMLStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

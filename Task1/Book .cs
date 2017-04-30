@@ -5,6 +5,7 @@ namespace Task1
     /// <summary>
     /// Class storing information about the book
     /// </summary>
+    [Serializable]
     public sealed class Book : IEquatable<Book>, IComparable, IComparable<Book>
     {
         public string Name { get;}
@@ -44,7 +45,8 @@ namespace Task1
             if (ReferenceEquals(null, book)) return false;
             if (ReferenceEquals(this, book)) return true;
 
-            return Equals(this, book);
+            if ((Name == book.Name)&&(Author == book.Author)) return true;
+            return false;
         }
 
         /// <summary>
